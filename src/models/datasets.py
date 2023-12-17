@@ -89,6 +89,13 @@ class DspritesDataset(torch.utils.data.Dataset):
         latent = torch.Tensor(self.latents[idx])
         return (image, latent)
 
+class rotated_MNIST(torch.utils.data.Dataset):
+    def __int__(self,dataroot, train = True ):
+        """
+        dataroot " Path to the data root directory.
+
+        """
+
 
 class PinwheelDataset(torch.utils.data.Dataset):
     """Pinwheel dataset. """
@@ -128,6 +135,7 @@ class PinwheelDataset(torch.utils.data.Dataset):
         else:
             data, labels = self.test_data[idx], self.test_labels[idx]
         return torch.Tensor(data), torch.Tensor(labels)
+
 
 
 def download_dataset(url, file):

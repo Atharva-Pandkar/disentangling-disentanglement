@@ -24,8 +24,10 @@ parser.add_argument('--iwae-samples', type=int, default=1000, help='number of sa
 
 cmds = parser.parse_args()
 runPath = cmds.save_dir
-
-args = torch.load(runPath + '/args.rar')
+print(cmds.save_dir+ '\\args.rar')
+with open(runPath+'\\args.rar','rb') as file:
+    atgs = file.read()
+args = torch.load(runPath + '\\args.rar')
 
 needs_conversion = cmds.no_cuda and args.cuda
 conversion_kwargs = {'map_location': lambda st, loc: st} if needs_conversion else {}
@@ -52,11 +54,12 @@ D = args.latent_dim
 @torch.no_grad()
 def test(beta, alpha, agg):
     model.eval()
+    print(type(test_loader.dataset[0][1]))
     b_negloss, b_recon, b_kl, b_reg, b_mlike = 0., 0., 0., 0., 0.
     zs_mean = torch.zeros(len(test_loader.dataset), D, device=device)
     zs_std = torch.zeros(len(test_loader.dataset), D, device=device)
     zs2_mean = torch.zeros(len(test_loader.dataset), D, device=device)
-    L = test_loader.dataset[0][1].view(-1).size(-1)
+    L = len(test_loader.dataset[0])//2
     ys = torch.zeros(len(test_loader.dataset), L, device=device)
     for i, (data, labels) in enumerate(test_loader):
         data = data.to(device)
